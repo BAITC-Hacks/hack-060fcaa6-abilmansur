@@ -10,7 +10,8 @@ and explains / challenges them.
 
     uv run python -m app.pipeline --data ../data --out ./output
 
-Every threshold and weight is a named constant below; README.md documents them.
+Every threshold and weight is a named constant below; the project README ("Как появляются роли и приоритеты")
+documents them.
 
 Data caveats the rules respect:
 - The crawl follows only *outgoing* transfers from 81 seeds, 4 hops deep. Nodes found at the last hop
@@ -41,7 +42,7 @@ REQUIRED_COLUMNS = {
 }
 OUTPUTS = ("nodes_roles.csv", "clusters.csv", "top_nodes.csv")
 
-# --------------------------------------------------------------------------- thresholds (see README)
+# --------------------------------------------------------------------------- thresholds (see the project README)
 
 FAST_DAYS = 2                 # in -> out within 0..FAST_DAYS days counts as fast forwarding
 HUB_MIN_DEGREE = 5            # consolidator: >= 5 unique senders; distributor: >= 5 unique receivers
