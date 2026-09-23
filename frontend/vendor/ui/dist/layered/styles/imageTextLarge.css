@@ -1,0 +1,2 @@
+@layer inv{.inv-image-text-large{display:flex;width:100%;min-width:0;flex-direction:column;gap:var(--inv-space-m)}.inv-image-text-large__image-wrap{position:relative;width:100%;min-height:60px;max-height:180px;border-radius:var(--inv-radius-m);overflow:hidden;background-color:var(--inv-sunk);line-height:0}.inv-image-text-large__image{display:block;width:100%;height:180px;max-height:180px;object-fit:cover}
+}

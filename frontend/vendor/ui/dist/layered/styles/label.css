@@ -1,0 +1,2 @@
+@layer inv{.inv-label{box-sizing:border-box;font:var(--inv-text-body-default);letter-spacing:var(--inv-text-body-default-letter-spacing);color:var(--inv-text-neutral-primary)}.inv-label-disabled{color:var(--inv-text-neutral-tertiary);cursor:not-allowed}.inv-label-required-asterisk{margin-left:var(--inv-space-3xs)}
+}

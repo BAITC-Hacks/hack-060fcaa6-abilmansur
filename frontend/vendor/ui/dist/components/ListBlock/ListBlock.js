@@ -1,0 +1,23 @@
+import { jsx as _jsx } from "react/jsx-runtime";
+import clsx from "clsx";
+import { Children, cloneElement, forwardRef, isValidElement, } from "react";
+const ListBlock = forwardRef((props, ref) => {
+    const { children, variant = "number", size = "default", className, style } = props;
+    const childArray = Children.toArray(children);
+    const listHasSubtitle = childArray.some((child) => isValidElement(child) && !!child.props.subtitle);
+    const enhancedChildren = Children.map(children, (child, index) => {
+        if (isValidElement(child)) {
+            return cloneElement(child, {
+                variant,
+                size,
+                listHasSubtitle,
+                index,
+            });
+        }
+        return child;
+    });
+    return (_jsx("div", { ref: ref, className: clsx("inv-list-block", size === "small" && "inv-list-block--small", className), style: style, children: enhancedChildren }));
+});
+ListBlock.displayName = "ListBlock";
+export { ListBlock };
+//# sourceMappingURL=ListBlock.js.map

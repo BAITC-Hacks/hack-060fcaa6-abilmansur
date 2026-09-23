@@ -1,0 +1,2 @@
+@layer inv{.inv-icon-text{display:flex;gap:var(--inv-space-m)}.inv-icon-text--vertical{flex-direction:column;align-items:flex-start}.inv-icon-text--horizontal{flex-direction:row;align-items:flex-start}.inv-icon-text--horizontal .inv-icon-tag{margin-top:var(--inv-space-3xs)}.inv-icon-text--horizontal .inv-text-block__primary{font:var(--inv-text-body-sm-heavy);letter-spacing:var(--inv-text-body-sm-heavy-letter-spacing)}.inv-icon-text__content{display:flex;flex-direction:column;min-width:0}
+}

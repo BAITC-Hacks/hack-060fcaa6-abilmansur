@@ -1,0 +1,2 @@
+@layer inv{.inv-inline-header{display:flex;flex-direction:column;gap:var(--inv-space-3xs);align-items:flex-start}.inv-inline-header-heading{display:flex;align-items:center;gap:var(--inv-space-xs);color:var(--inv-text-neutral-primary);font:var(--inv-text-body-default-heavy);letter-spacing:var(--inv-text-body-default-heavy-letter-spacing)}.inv-inline-header-description{color:var(--inv-text-neutral-secondary);font:var(--inv-text-body-default);letter-spacing:var(--inv-text-body-default-letter-spacing)}
+}

@@ -1,0 +1,84 @@
+import React from "react";
+import { Theme, ThemeMode } from "./types";
+/**
+ * Props for the {@link ThemeProvider} component.
+ */
+export type ThemeProps = {
+    /** Active color scheme. Defaults to the parent ThemeProvider mode when nested, otherwise `"light"`. */
+    mode?: ThemeMode;
+    /** Application content rendered inside the theme context. */
+    children?: React.ReactNode;
+    /**
+     * Partial overrides for **light** mode, merged onto the built-in light
+     * defaults.  Omitted keys fall back to the built-in defaults.
+     * Preferred over the deprecated `theme` prop.
+     */
+    lightTheme?: Theme;
+    /**
+     * Partial overrides for **dark** mode, merged onto the built-in dark
+     * defaults.  When omitted, `lightTheme` overrides are applied to both modes
+     * so a single set of brand customizations "just works".
+     */
+    darkTheme?: Theme;
+    /**
+     * @deprecated Use `lightTheme` instead. Kept for backward compatibility;
+     * mapped to `lightTheme` internally. If both `theme` and `lightTheme` are
+     * provided, `lightTheme` wins.
+     */
+    theme?: Theme;
+    /**
+     * CSS selector where `--inv-*` custom properties are injected.
+     * Change this when mounting multiple independent theme scopes.
+     * @default "body"
+     */
+    cssSelector?: string;
+};
+type ThemeContextType = {
+    theme: Theme;
+    mode: ThemeMode;
+    portalThemeClassName: string;
+};
+/**
+ * React context that carries the resolved theme, active mode, and a CSS class
+ * name for portals. Consumed via {@link useTheme}.
+ */
+export declare const ThemeContext: React.Context<ThemeContextType>;
+/**
+ * Access the current theme, mode, and portal class name from the nearest
+ * {@link ThemeProvider}.
+ *
+ * @returns An object with:
+ *  - `theme` – the fully resolved {@link Theme} object
+ *  - `mode` – `"light"` or `"dark"`
+ *  - `portalThemeClassName` – a unique CSS class name to apply on portal
+ *     containers so they inherit the same `--inv-*` custom properties
+ *
+ * Falls back to the default light theme when no provider is present.
+ *
+ * @example
+ * ```tsx
+ * const { theme, mode, portalThemeClassName } = useTheme();
+ * ```
+ */
+export declare const useTheme: () => ThemeContextType;
+/**
+ * Injects the Inv design-token CSS custom properties (`--inv-*`) into the
+ * DOM and provides theme context to all descendant components.
+ *
+ * Supports automatic scoping when nested inside another ThemeProvider: the inner
+ * provider wraps its children in a `<div>` with `display: contents` and injects
+ * a scoped style rule instead of targeting `body`.
+ *
+ * @example
+ * ```tsx
+ * <ThemeProvider
+ *   mode="dark"
+ *   lightTheme={createTheme({ interactiveAccentDefault: "oklch(0.6 0.2 260)" })}
+ * >
+ *   <App />
+ * </ThemeProvider>
+ * ```
+ */
+export declare const ThemeProvider: ({ mode: modeProp, children, lightTheme, darkTheme, theme: deprecatedTheme, cssSelector, }: ThemeProps) => React.JSX.Element;
+export {};
+//# sourceMappingURL=ThemeProvider.d.ts.map

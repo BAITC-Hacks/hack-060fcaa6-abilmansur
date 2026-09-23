@@ -1,0 +1,2 @@
+@layer inv{.text-content{box-sizing:border-box;color:var(--inv-text-neutral-primary);font:var(--inv-text-body-default);letter-spacing:var(--inv-text-body-default-letter-spacing);border:1px solid}.text-content-sunk{padding:var(--inv-space-m);background:var(--inv-sunk);border-radius:var(--inv-radius-m);border-color:var(--inv-border-default)}.text-content-card{padding:var(--inv-space-m);border-radius:var(--inv-radius-m);border-color:var(--inv-border-default)}.text-content-clear{border-color:rgba(0,0,0,0)}
+}

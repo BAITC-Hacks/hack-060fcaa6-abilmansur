@@ -1,0 +1,2 @@
+@layer inv{.inv-switch-group{box-sizing:border-box;display:flex;flex-direction:column;gap:var(--inv-space-xs);border:1px solid;border-radius:var(--inv-radius-xl)}.inv-switch-group-clear{border-color:rgba(0,0,0,0);background-color:rgba(0,0,0,0);padding:var(--inv-space-000)}.inv-switch-group-card{border-color:var(--inv-border-default);padding:var(--inv-space-m)}.inv-switch-group-sunk{border-color:var(--inv-border-default);background-color:var(--inv-sunk);padding:var(--inv-space-m)}
+}

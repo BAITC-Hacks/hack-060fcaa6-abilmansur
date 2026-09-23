@@ -1,0 +1,2 @@
+@layer inv{.inv-buttons{display:flex;width:100%;gap:var(--inv-space-m);box-sizing:border-box}.inv-buttons-horizontal{flex-direction:row;flex-wrap:wrap}.inv-buttons-vertical{flex-direction:column}
+}

@@ -1,0 +1,20 @@
+"use client";
+import { useEffect } from "react";
+/** Whether an element is currently rendered on screen enough to receive focus. */
+const canFocus = (el) => typeof el.checkVisibility === "function" ? el.checkVisibility() : el.getClientRects().length > 0;
+/**
+ * Focuses a ref'd element on mount, whenever `focusKey` changes, and whenever
+ * `enabled` flips back to `true` — but only while the element is actually on
+ * screen.
+ */
+export const useAutoFocus = (ref, { enabled = true, focusKey } = {}) => {
+    useEffect(() => {
+        if (!enabled)
+            return;
+        const el = ref.current;
+        if (!el || !canFocus(el))
+            return;
+        el.focus();
+    }, [ref, enabled, focusKey]);
+};
+//# sourceMappingURL=useAutoFocus.js.map

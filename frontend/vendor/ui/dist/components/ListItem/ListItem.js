@@ -1,0 +1,11 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import clsx from "clsx";
+import React from "react";
+const ListItem = React.forwardRef((props, ref) => {
+    const { className, style, variant = "number", size = "default", icon, image, index = 0, listHasSubtitle, title, subtitle, actionIcon, actionLabel, onClick, ...rest } = props;
+    const hasAction = !!onClick;
+    return (_jsx("div", { ref: ref, className: clsx("inv-list-item-wrapper", size === "small" && "inv-list-item-wrapper--small", hasAction && "inv-list-item-wrapper-with-action", className), style: style, ...rest, children: _jsxs("div", { className: clsx("inv-list-item", hasAction && "inv-list-item-clickable"), onClick: onClick, role: hasAction ? "button" : undefined, tabIndex: hasAction ? 0 : undefined, children: [_jsxs("div", { className: clsx("inv-list-item-indicator", !listHasSubtitle && "inv-list-item-indicator-no-subtitle", hasAction && "inv-list-item-indicator-clickable"), children: [variant === "number" && (_jsx("div", { className: "inv-list-item-indicator-number", children: index + 1 })), variant === "icon" && icon, variant === "image" && image && (image.src || image.alt) && (_jsx("div", { className: "inv-list-item-indicator-image", children: _jsx("img", { src: image.src, alt: image.alt, width: 40, height: 40 }) }))] }), _jsxs("div", { className: "inv-list-item-content-wrapper", children: [_jsxs("div", { className: "inv-list-item-content", children: [title && _jsx("div", { className: "inv-list-item-title", children: title }), subtitle && _jsx("div", { className: "inv-list-item-subtitle", children: subtitle })] }), hasAction && (actionIcon || actionLabel) && (_jsxs("div", { className: "inv-list-item-action", children: [actionLabel && _jsx("div", { className: "inv-list-item-action-label", children: actionLabel }), actionIcon && _jsx("div", { className: "inv-list-item-action-icon", children: actionIcon })] }))] })] }) }));
+});
+ListItem.displayName = "ListItem";
+export { ListItem };
+//# sourceMappingURL=ListItem.js.map

@@ -1,0 +1,1 @@
+.inv-hint{box-sizing:border-box;font:var(--inv-text-body-sm);letter-spacing:var(--inv-text-body-sm-letter-spacing);color:var(--inv-text-neutral-secondary);display:flex;align-items:center;gap:var(--inv-space-xs)}.inv-hint-error{color:var(--inv-text-danger-primary)}.inv-form-control{box-sizing:border-box;display:flex;flex-direction:column;gap:var(--inv-space-s)}

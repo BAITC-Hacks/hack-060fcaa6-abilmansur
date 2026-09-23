@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Reference copy of the chat template (its own app with its own deps).
+    "template/**",
   ]),
 ]);
 

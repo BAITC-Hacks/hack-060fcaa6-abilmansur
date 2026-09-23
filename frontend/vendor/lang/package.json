@@ -1,0 +1,52 @@
+{
+  "name": "@inv/lang",
+  "version": "0.3.0",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.cts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "react-native": {
+        "import": {
+          "types": "./dist/index.native.d.mts",
+          "default": "./dist/index.native.mjs"
+        },
+        "require": {
+          "types": "./dist/index.native.d.cts",
+          "default": "./dist/index.native.cjs"
+        }
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "react-native": "./dist/index.native.cjs",
+  "dependencies": {
+    "@inv/lang-core": "workspace:*",
+    "@inv/observability": "workspace:*"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": ">=1.0.0",
+    "react": "*",
+    "react-dom": "*",
+    "zod": "^3.25.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/sdk": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "private": true
+}

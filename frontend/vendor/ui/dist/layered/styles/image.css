@@ -1,0 +1,2 @@
+@layer inv{.inv-image{display:flex;box-sizing:border-box;max-width:100%;height:auto;overflow:clip;border-radius:var(--inv-radius-m);border:1px solid var(--inv-border-default);background-color:var(--inv-foreground)}.inv-image-fit{object-fit:contain;width:100%;height:100%}.inv-image-fill{object-fit:cover;width:100%;height:100%}.inv-image--error{visibility:hidden}
+}

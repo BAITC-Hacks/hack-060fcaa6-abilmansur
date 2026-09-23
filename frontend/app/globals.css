@@ -1,0 +1,207 @@
+/* Layer order: The UI kit's component styles sit above Tailwind's reset and below utilities,
+   so a utility on a UI-kit element always wins. */
+@layer theme, base, inv, components, utilities;
+
+@import "tailwindcss";
+/* The UI kit: tokens + every component and AgentInterface style. */
+@import "@inv/ui/layered/styles/index.css";
+
+/* The reference template has its own dependencies; keep its files out of class scanning. */
+@source not "../template";
+@source not "../vendor";
+
+/* Tailwind tokens read the UI-kit variables, so utilities follow the theme (light/dark) at runtime. */
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--inv-font-code);
+
+  /* Surfaces */
+  --color-background: var(--inv-background);
+  --color-surface: var(--inv-foreground);
+  --color-popover: var(--inv-popover-background);
+  --color-sunk-light: var(--inv-sunk-light);
+  --color-sunk: var(--inv-sunk);
+  --color-sunk-deep: var(--inv-sunk-deep);
+  --color-highlight-subtle: var(--inv-highlight-subtle);
+  --color-highlight: var(--inv-highlight);
+  --color-highlight-strong: var(--inv-highlight-strong);
+  --color-elevated: var(--inv-elevated);
+  --color-inverted: var(--inv-inverted-background);
+  --color-overlay: var(--inv-overlay);
+
+  /* Text */
+  --color-primary: var(--inv-text-neutral-primary);
+  --color-secondary: var(--inv-text-neutral-secondary);
+  --color-tertiary: var(--inv-text-neutral-tertiary);
+  --color-on-inverted: var(--inv-foreground);
+  --color-brand: var(--inv-text-brand);
+  --color-accent: var(--inv-interactive-accent-default);
+
+  /* Borders */
+  --color-line: var(--inv-border-default);
+  --color-line-interactive: var(--inv-border-interactive);
+  --color-line-emphasis: var(--inv-border-interactive-emphasis);
+
+  /* Status (text + tinted background pairs) */
+  --color-success: var(--inv-text-success-primary);
+  --color-success-bg: var(--inv-success-background);
+  --color-alert: var(--inv-text-alert-primary);
+  --color-alert-bg: var(--inv-alert-background);
+  --color-danger: var(--inv-text-danger-primary);
+  --color-danger-bg: var(--inv-danger-background);
+  --color-info: var(--inv-text-info-primary);
+  --color-info-bg: var(--inv-info-background);
+  --color-purple: var(--inv-text-purple-primary);
+  --color-purple-bg: var(--inv-purple-background);
+  --color-pink: var(--inv-text-pink-primary);
+  --color-pink-bg: var(--inv-pink-background);
+
+  /* Observable roles on the graph (data colours, same in both themes) */
+  --color-role-source: #10b981;
+  --color-role-collector: #8b5cf6;
+  --color-role-distributor: #f97316;
+  --color-role-transit: #ec4899;
+  --color-role-final: #3b82f6;
+  --color-role-coordinated: #14b8a6;
+  --color-role-organizer: #ef4444;
+  --color-role-unclear: #9ca3af;
+
+  --shadow-s: var(--inv-shadow-s);
+  --shadow-m: var(--inv-shadow-m);
+  --shadow-l: var(--inv-shadow-l);
+  --shadow-xl: var(--inv-shadow-xl);
+  --shadow-2xl: var(--inv-shadow-2xl);
+
+  --animate-ping-soft: ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes ping-soft {
+    0% { transform: scale(1); opacity: 0.55; }
+    80%, 100% { transform: scale(2.4); opacity: 0; }
+  }
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    background: var(--inv-foreground);
+    color: var(--inv-text-neutral-primary);
+  }
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Anything clickable shows a pointer; disabled controls don't. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  a[href],
+  summary,
+  input[type="range"],
+  select {
+    cursor: pointer;
+  }
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+  :focus-visible {
+    outline: 2px solid var(--inv-border-accent-emphasis);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--inv-interactive-accent-default) 22%, transparent);
+  }
+}
+
+/* ---------------------------------------------------------------- chat layout
+   Thread header holding the dataset switcher / investigation controls, as the template does for its
+   model switcher: hide the empty title slot, let the actions row fill and distribute. */
+.inv-app-thread-header .inv-agent-thread-header__title {
+  display: none;
+}
+.inv-app-thread-header .inv-agent-thread-header__actions {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: space-between;
+}
+
+/* Composer textareas grow with their text (the kit sizes them to scrollHeight); the kit caps them at 200px,
+   which scrolls after ~8 lines. Only a genuinely long draft that would push the page apart scrolls. */
+.inv-agent-thread-composer__input,
+.inv-agent-desktop-welcome-composer__input {
+  max-height: 50dvh;
+  scrollbar-width: thin;
+  scrollbar-color: var(--inv-highlight-strong) transparent;
+}
+/* The kit gives the welcome composer's textarea `flex: 1 1 0%`, which overrides the height it sets from the
+   text (so it never grew); size it by that height instead. */
+.inv-agent-desktop-welcome-composer__input {
+  flex: 0 0 auto;
+}
+
+/* Icon-only buttons are flat: no plate at rest or on hover, only the glyph colour changes;
+   selected = the brand colour. (Filled primary send/play buttons keep their fill.) */
+.inv-icon-button-tertiary {
+  color: var(--inv-text-neutral-secondary);
+  transition: color 120ms ease-out;
+}
+.inv-icon-button-tertiary:not(:disabled):hover,
+.inv-icon-button-tertiary:not(:disabled):active {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--inv-text-neutral-primary);
+}
+.inv-icon-button-tertiary[aria-pressed="true"] {
+  color: var(--inv-text-brand);
+}
+
+/* Thread titles in the sidebar crossfade when a generated title replaces the temporary one: both texts sit
+   in one grid cell (the row keeps its size, each text keeps its own ellipsis), old fades out, new fades in. */
+.inv-agent-thread-title-stack {
+  display: grid;
+  min-width: 0;
+}
+.inv-agent-thread-title-text {
+  grid-area: 1 / 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: opacity 240ms ease-in-out;
+}
+.inv-agent-thread-title-text--entering,
+.inv-agent-thread-title-text--leaving {
+  opacity: 0;
+}
+.inv-agent-thread-title-text--leaving {
+  pointer-events: none;
+}
+
+/* The working tray is one line: a mark and the current phase, which crossfades as the agent moves on. */
+.inv-behind-the-scenes__phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.inv-behind-the-scenes__phase-mark {
+  color: var(--inv-text-brand);
+  font-size: 0.85em;
+  line-height: 1;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--inv-highlight-strong) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

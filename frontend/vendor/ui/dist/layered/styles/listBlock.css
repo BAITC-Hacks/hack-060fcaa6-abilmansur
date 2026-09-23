@@ -1,0 +1,2 @@
+@layer inv{.inv-list-block{box-sizing:border-box;display:flex;flex-direction:column;align-items:flex-start;width:100%;gap:var(--inv-space-l)}.inv-list-block--small{gap:var(--inv-space-m)}
+}

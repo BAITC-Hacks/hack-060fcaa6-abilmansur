@@ -1,0 +1,22 @@
+import { ButtonHTMLAttributes, ReactNode } from "react";
+type IconButtonVariant = "primary" | "secondary" | "tertiary";
+type IconButtonSize = "3-extra-small" | "2-extra-small" | "extra-small" | "small" | "medium" | "large";
+type IconButtonShape = "square" | "circle";
+type IconButtonAppearance = "normal" | "destructive";
+export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    icon: ReactNode;
+    variant?: IconButtonVariant;
+    size?: IconButtonSize;
+    shape?: IconButtonShape;
+    className?: string;
+    appearance?: IconButtonAppearance;
+    /**
+     * Render as the provided child element instead of a `<button>`. Useful when the
+     * icon button is nested inside another interactive element (e.g. an accordion
+     * trigger) where a nested `<button>` would be invalid HTML.
+     */
+    asChild?: boolean;
+}
+export declare const IconButton: import("react").ForwardRefExoticComponent<IconButtonProps & import("react").RefAttributes<HTMLButtonElement>>;
+export {};
+//# sourceMappingURL=IconButton.d.ts.map

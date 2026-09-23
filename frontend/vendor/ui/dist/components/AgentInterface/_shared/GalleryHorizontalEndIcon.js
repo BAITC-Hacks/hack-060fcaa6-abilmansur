@@ -1,0 +1,3 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const GalleryHorizontalEndIcon = ({ size = "1em", ...props }) => (_jsxs("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", focusable: "false", ...props, children: [_jsx("path", { d: "M2.5 19.323A2 2 0 0 1 2 18V6a2 2 0 0 1 .5-1.323" }), _jsx("path", { d: "M6.5 19.823A2 2 0 0 1 6 18.49V5.5a2 2 0 0 1 .268-1" }), _jsx("rect", { x: "10", y: "4", width: "12", height: "16", rx: "2" })] }));
+//# sourceMappingURL=GalleryHorizontalEndIcon.js.map
