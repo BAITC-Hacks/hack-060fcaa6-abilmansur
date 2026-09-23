@@ -6,8 +6,7 @@
 /* The UI kit: tokens + every component and AgentInterface style. */
 @import "@inv/ui/layered/styles/index.css";
 
-/* The reference template has its own dependencies; keep its files out of class scanning. */
-@source not "../template";
+/* The vendored UI kit ships its own compiled CSS; keep it out of class scanning. */
 @source not "../vendor";
 
 /* Tailwind tokens read the UI-kit variables, so utilities follow the theme (light/dark) at runtime. */
@@ -124,6 +123,14 @@
   flex: 1 1 auto;
   min-width: 0;
   justify-content: space-between;
+}
+
+/* The product name in the sidebar header: the display face, set as a wordmark. */
+.inv-agent-sidebar-header__agent-name {
+  font-family: var(--font-display), var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
 }
 
 /* Composer textareas grow with their text (the kit sizes them to scrollHeight); the kit caps them at 200px,

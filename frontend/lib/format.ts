@@ -1,5 +1,5 @@
 import type { Tone } from "@/components/ui";
-import type { Role, RunStatus, Stage } from "./api";
+import type { Role, RunStatus, Stage, TaskRole } from "./api";
 
 export const STAGES: { key: Stage; label: string; hint: string }[] = [
   { key: "data_study", label: "Данные", hint: "Паспорт датасета и ограничения" },
@@ -22,6 +22,16 @@ export const ROLES: Record<Role | "context", { label: string; color: string; sho
   organizer: { label: "Организатор", color: "#ef4444", short: "Орг." },
   unclear: { label: "Роль не ясна", color: "#9ca3af", short: "?" },
   context: { label: "Контрагент вне группы", color: "#d1d5db", short: "—" },
+};
+
+/** Roles of the task vocabulary (the scoring pipeline's output), in the order they are explained. */
+export const TASK_ROLES: Record<TaskRole, { label: string; color: string; hint: string }> = {
+  consolidator: { label: "Консолидатор", color: "#8b5cf6", hint: "аккумулирует средства от нескольких участников" },
+  transit: { label: "Транзит", color: "#ec4899", hint: "пропускает средства дальше, не удерживая" },
+  distributor: { label: "Распределитель", color: "#f97316", hint: "веерно раздаёт средства многим получателям" },
+  coordinator: { label: "Координатор", color: "#ef4444", hint: "связывает узлы-хабы, кандидат в организаторы" },
+  terminal: { label: "Конечный получатель", color: "#3b82f6", hint: "деньги приходят и остаются (в данных)" },
+  peripheral: { label: "Периферия", color: "#9ca3af", hint: "признаков роли не выявлено" },
 };
 
 export const RUN_STATUS: Record<RunStatus, { label: string; tone: "live" | "ok" | "warn" | "bad" | "muted" }> = {

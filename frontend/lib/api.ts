@@ -45,6 +45,56 @@ export interface GraphProfile {
   outputs: string[];
 }
 
+/** One node of the crawl graph with the scoring pipeline's result (gid as a string: 18 digits exceed JS numbers). */
+export interface NetworkNode {
+  gid: string;
+  role: TaskRole;
+  role_score: number;
+  cluster_id: number;
+  priority_score: number;
+  rank: number;
+  evidence: string;
+  depth: number;
+  is_seed: boolean;
+  censored: boolean;
+  seeds_upstream: number;
+  seeds_direct: number;
+  in_degree: number;
+  out_degree: number;
+  in_tx: number;
+  out_tx: number;
+  in_sum_kzt: number;
+  out_sum_kzt: number;
+  retention: number | null;
+  fast_out_share: number;
+  peer_in_degree: number;
+  peer_out_degree: number | null;
+  peer_volume: number;
+  peer_betweenness: number;
+  depth_outliers: string | null;
+}
+export interface NetworkEdge { source: string; target: string; sum_kzt: number; n_tx: number }
+export interface NetworkCluster {
+  cluster_id: number;
+  n_nodes: number;
+  n_seed: number;
+  sum_kzt_internal: number;
+  top_gids: string;
+  hypothesis: string;
+}
+export interface Network { nodes: NetworkNode[]; edges: NetworkEdge[]; clusters: NetworkCluster[] }
+export const useNetwork = (datasetId: string | null) =>
+  useApi<Network>(datasetId ? `/datasets/${datasetId}/network` : null);
+
+export interface NetworkState { largest_fragment: number; fragments: number; reachable_from_seeds: number }
+/** Removing the top-N nodes by priority against removing N random non-seed nodes (mean). */
+export interface Resilience {
+  baseline: NetworkState;
+  steps: { removed: number; top: NetworkState; random: NetworkState }[];
+}
+export const useResilience = (datasetId: string | null) =>
+  useApi<Resilience>(datasetId ? `/datasets/${datasetId}/resilience` : null);
+
 /** Download URL of a scoring-pipeline result file (nodes_roles.csv, clusters.csv, top_nodes.csv). */
 export const outputUrl = (datasetId: string, name: string) => `${API_URL}/datasets/${datasetId}/outputs/${name}`;
 

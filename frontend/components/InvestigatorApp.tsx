@@ -11,11 +11,12 @@ import {
   useThreadList,
   type ModelOption,
 } from "@inv/ui";
-import { Database, FileText, Network, Timer, Upload, Users } from "lucide-react";
+import { Database, FileText, Network, Share2, Timer, Upload, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { mutate } from "swr";
 
 import { DatasetsPage } from "@/components/DatasetsPage";
+import { NetworkPage } from "@/components/network/NetworkPage";
 import { ARTIFACT_CATEGORIES, ARTIFACT_RENDERERS } from "@/components/artifacts/renderers";
 import { Tooltip } from "@/components/ui";
 import { useActiveRuns, useDatasets, useHealth } from "@/lib/api";
@@ -85,6 +86,9 @@ export default function InvestigatorApp({ initialThreadId }: { initialThreadId?:
             <div className="inv-agent-sidebar-primary-actions">
               <AgentInterface.NewChatButton />
               <AgentInterface.ArtifactNav className="inv-agent-sidebar-artifact-nav" />
+              <AgentInterface.SidebarItem path="network" icon={<Share2 size="1em" />}>
+                Сеть
+              </AgentInterface.SidebarItem>
               <DatasetsNavItem />
             </div>
           </div>
@@ -98,6 +102,9 @@ export default function InvestigatorApp({ initialThreadId }: { initialThreadId?:
         </AgentInterface.ThreadHeader>
         <AgentInterface.Welcome title={`${greeting()}!`} description="Какую сеть переводов расследуем сегодня?" glowAnimation />
         <AgentInterface.Composer placeholder="Спросите агента о сети, версии или конкретной связи…" />
+        <AgentInterface.Route path="network">
+          <NetworkPage />
+        </AgentInterface.Route>
         <AgentInterface.Route path="datasets">
           <DatasetsPage onPick={() => setPath(undefined)} />
         </AgentInterface.Route>

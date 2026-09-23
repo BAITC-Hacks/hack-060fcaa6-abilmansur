@@ -227,6 +227,7 @@ export function describeStep(step: Step): { label: string; kind: StepKind; targe
       return { label: `Запускаю субагента: ${clip(field(step, "description") ?? "подзадача", 40)}`, kind: "subagent" };
     case "sql": return { label: `Запрос к данным: ${clip(field(step, "purpose") ?? "SQL", 48)}`, kind: "query", target: field(step, "query") };
     case "get_state": return { label: "Читаю состояние расследования", kind: "state" };
+    case "node_card": return { label: `Смотрю карточку узла ${field(step, "account_id") ?? ""}`.trim(), kind: "query" };
     case "set_stage": {
       const s = STAGES.find((x) => x.key === field(step, "stage"));
       return { label: `Перехожу к этапу «${s?.label ?? field(step, "stage") ?? "…"}»`, kind: "stage" };

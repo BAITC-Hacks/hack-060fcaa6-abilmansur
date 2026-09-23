@@ -1,38 +1,28 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
-name = "money-graph"
+name = "fin-investigator"
 version = "0.1.0"
-description = "Explainable local transaction graph analytics with a Codex assistant"
 requires-python = ">=3.12"
 dependencies = [
-  "fastapi>=0.141,<0.142",
-  "uvicorn[standard]>=0.53,<0.54",
-  "pandas>=3.0,<3.1",
-  "pyarrow>=25,<26",
-  "networkx>=3.7,<3.8",
-  "scipy>=1.18,<1.19",
-  "openai-codex==0.156.1",
+    "claude-agent-sdk>=0.2.157",
+    "duckdb>=1.5.5",
+    "fastapi>=0.141.1",
+    "networkx>=3.7",
+    "pandas>=3.0.6",
+    "pyarrow>=25.0.1",
+    "pydantic-settings>=2.15.0",
+    "python-multipart>=0.0.32",
+    "scipy>=1.18.1",
+    "sse-starlette>=3.4.11",
+    "uvicorn[standard]>=0.53.0",
 ]
 
 [dependency-groups]
-dev = ["pytest>=9,<10", "httpx>=0.28,<0.29", "ruff>=0.16,<0.17"]
-
-[project.scripts]
-money-graph = "money_graph.cli:main"
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/money_graph"]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+]
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 testpaths = ["tests"]
-pythonpath = ["src"]
-
-[tool.ruff]
-target-version = "py312"
-line-length = 100
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
+filterwarnings = ["ignore::DeprecationWarning"]
