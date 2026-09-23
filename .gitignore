@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+backend/data/
+backend/.env
+node_modules/
+.next/
+# Hackathon dataset: provided for the hackathon only, not for redistribution (see task).
+data/
+.DS_Store
+*.tsbuildinfo

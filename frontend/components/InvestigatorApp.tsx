@@ -11,17 +11,19 @@ import {
   useThreadList,
   type ModelOption,
 } from "@inv/ui";
-import { Database, FileText, Network, Share2, Timer, Upload, Users } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Database, FileQuestion, HelpCircle, ListOrdered, Share2, Upload, Users } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { mutate } from "swr";
 
 import { DatasetsPage } from "@/components/DatasetsPage";
 import { NetworkPage } from "@/components/network/NetworkPage";
 import { ARTIFACT_CATEGORIES, ARTIFACT_RENDERERS } from "@/components/artifacts/renderers";
 import { Tooltip } from "@/components/ui";
-import { useActiveRuns, useDatasets, useHealth } from "@/lib/api";
+import { useActiveRuns, useDatasets, useHealth, useNetwork } from "@/lib/api";
 import { fmtShort, greeting } from "@/lib/format";
-import { createLLM, createStorage, isFollowedRun, loadMessages, onGeneratedTitle, openRunStream } from "@/lib/chat/adapters";
+import {
+  INVESTIGATE_PROMPT, createLLM, createStorage, isFollowedRun, loadMessages, onGeneratedTitle, openRunStream,
+} from "@/lib/chat/adapters";
 import { useDatasetStore } from "@/lib/chat/datasetStore";
 import { useUpload } from "@/lib/useUpload";
 
@@ -29,29 +31,45 @@ import { useUpload } from "@/lib/useUpload";
 const LOGO = "/logo-falcon.png";
 const APP_NAME = "Falcon";
 
-const STARTERS = [
-  {
-    icon: <Network size={16} />, displayText: "Найти организованную группу",
-    prompt: "Найти организованную группу среди обычных операций, восстановить её финансовую структуру: участников, связи, наблюдаемые роли и движение денег, с проверяемыми доказательствами.",
-  },
-  {
-    icon: <Timer size={16} />, displayText: "Где быстрый транзит?",
-    prompt: "Найти счета, через которые деньги быстро проходят транзитом с малым остатком, и проверить, образуют ли они общую структуру.",
-  },
-  {
-    icon: <Users size={16} />, displayText: "Кто собирает средства?",
-    prompt: "Найти счета-сборщики, получающие переводы от множества отправителей, и проследить, куда уходят собранные средства.",
-  },
-  {
-    icon: <FileText size={16} />, displayText: "Паспорт датасета",
-    prompt: "Изучить датасет: поля, периоды, валюты, качество и полноту данных; описать ограничения и первые подозрительные структуры.",
-  },
-];
-
+/** Starters follow the task's scenarios. gids come from the current dataset's ranking, never from code. */
+function useStarters() {
+  const { data: datasets } = useDatasets();
+  const storeId = useDatasetStore((s) => s.datasetId);
+  const graphs = (datasets ?? []).filter((d) => d.profile.kind === "graph");
+  const dataset = graphs.find((d) => d.id === storeId) ?? graphs[0] ?? null;
+  const { data: network } = useNetwork(dataset?.id ?? null);
+  return useMemo(() => {
+    const top = network?.nodes[0];
+    const seeds = (network?.nodes ?? []).filter((n) => n.is_seed).slice(0, 3).map((n) => n.gid);
+    return [
+      { icon: <ListOrdered size={16} />, displayText: "Кого проверять первым?", prompt: INVESTIGATE_PROMPT },
+      top && {
+        icon: <HelpCircle size={16} />,
+        displayText: `Почему ${top.gid} на 1-м месте?`,
+        prompt: `Объясни, почему узел ${top.gid} на 1-м месте рейтинга и почему у него роль ${top.role}: какие метрики и `
+          + "транзакции это подтверждают, какое обычное объяснение возможно и чего не хватает для проверки.",
+      },
+      seeds.length > 0 && {
+        icon: <Users size={16} />,
+        displayText: "Кто собирает деньги с этих seed?",
+        prompt: `Кто собирает деньги с seed ${seeds.join(", ")}? Проследи их переводы на 1–3 шага и назови узлы, `
+          + "где деньги сходятся или остаются, с цифрами.",
+      },
+      {
+        icon: <FileQuestion size={16} />,
+        displayText: "Каких данных не хватает?",
+        prompt: "Оцени полноту: каких данных не хватает, чтобы подтвердить выводы по верхним узлам рейтинга (граница "
+          + "4-го колена, невидимые входящие, порог 5 000 ₸), и какой запрос аналитику стоит сделать следующим — по "
+          + "каким узлам и за какой период.",
+      },
+    ].filter(Boolean) as { icon: ReactNode; displayText: string; prompt: string }[];
+  }, [network]);
+}
 
 /** The chat interface (AgentInterface), backed by the investigator API. */
 export default function InvestigatorApp({ initialThreadId }: { initialThreadId?: string }) {
   const mode = useSystemThemeMode();
+  const starters = useStarters();
   // ChatProvider captures storage and llm at mount.
   const [storage] = useState(createStorage);
   const [llm] = useState(createLLM);
@@ -67,7 +85,7 @@ export default function InvestigatorApp({ initialThreadId }: { initialThreadId?:
         logoUrl={LOGO}
         agentName={APP_NAME}
         theme={{ mode }}
-        starters={STARTERS}
+        starters={starters}
         // The default "user-message-anchor" pads the last message to a viewport height, leaving empty space
         // to scroll into; "always" ends the thread at its content and follows a live run to the bottom.
         scrollVariant="always"

@@ -377,6 +377,12 @@ def build_tools(ctx: RunContext) -> list:
               "limitations", "alternatives"]))
     @guarded
     async def add_evidence(args: dict) -> dict:
+        text = " ".join(str(args.get(k) or "") for k in ("title", "claim", "limitations", "alternatives"))
+        text += " " + " ".join(map(str, args.get("observed_features") or []))
+        problems = report_problems(text)
+        if problems:
+            return _err("rewrite the evidence texts: write every account as its full gid and roles in the task "
+                        "vocabulary (consolidator, transit, distributor, terminal, coordinator, peripheral)", **problems)
         # The query that selects the transactions also documents how they were obtained.
         if args.get("tx_query_id") and not args.get("query_id") and not args.get("script_path"):
             args = {**args, "query_id": args["tx_query_id"]}

@@ -13,7 +13,7 @@ import {
   type Thread,
 } from "@inv/headless";
 
-import { API_URL, api, patch, post, type Board, type Investigation, type InvestigationEvent, type Run } from "@/lib/api";
+import { API_URL, api, patch, post, type Board, type Evidence, type Investigation, type InvestigationEvent, type Run } from "@/lib/api";
 import { EVIDENCE_TOOL, RunConverter, VERSION_TOOL } from "./converter";
 import { useDatasetStore } from "./datasetStore";
 
@@ -181,18 +181,17 @@ export function createStorage(): ChatStorage {
       async list(params) {
         const hiddenIds = hidden();
         const investigations = (await api<Investigation[]>("/investigations")).filter((i) => !hiddenIds.has(i.id));
-        const boards = await Promise.all(investigations.map((i) => api<Board>(`/investigations/${i.id}/board`).catch(() => null)));
+        const [boards, evidenceLists] = await Promise.all([
+          Promise.all(investigations.map((i) => api<Board>(`/investigations/${i.id}/board`).catch(() => null))),
+          // Every evidence packet of the investigation: the agent may publish one before (or without) a version.
+          Promise.all(investigations.map((i) => api<Evidence[]>(`/investigations/${i.id}/evidence`).catch(() => []))),
+        ]);
         const all: ArtifactSummary[] = [];
-        boards.forEach((board, i) => {
-          if (!board) return;
-          const inv = investigations[i];
-          const evidence = new Map<string, ArtifactSummary>();
-          for (const v of board.versions) {
+        investigations.forEach((inv, i) => {
+          for (const v of boards[i]?.versions ?? [])
             all.push({ id: `ver:${inv.id}:${v.id}`, title: v.title, type: VERSION_ARTIFACT, threadId: inv.id, updatedAt: v.created_at });
-            for (const e of v.evidence)
-              evidence.set(e.id, { id: `ev:${inv.id}:${e.id}`, title: e.title, type: EVIDENCE_ARTIFACT, threadId: inv.id, updatedAt: v.created_at });
-          }
-          all.push(...evidence.values());
+          for (const e of evidenceLists[i])
+            all.push({ id: `ev:${inv.id}:${e.id}`, title: e.title, type: EVIDENCE_ARTIFACT, threadId: inv.id, updatedAt: e.created_at });
         });
         all.forEach((a) => artifactIndex.set(a.id, a));
         const name = params?.name?.trim().toLowerCase();
@@ -231,6 +230,12 @@ const messageText = (m?: Message): string => {
   return "";
 };
 
+/** The full investigation (the "Кого проверять первым?" starter): the only first message that runs all stages. */
+export const INVESTIGATE_PROMPT =
+  "Найди, кто стоит выше 81 seed-клиента по цепочке денег: куда они стекаются, через кого проходят и кто ими " +
+  "распоряжается. Проверь на транзакциях топ-20 рейтинга приложения и самые подозрительные кластеры. Итог — " +
+  "ранжированный список 10–20 узлов для углублённой проверки с коротким понятным обоснованием по каждому.";
+
 /** Runs this tab already streams (sent from here), so ThreadSync does not attach to them a second time. */
 const followedRuns = new Set<string>();
 export const isFollowedRun = (runId: string) => followedRuns.has(runId);
@@ -260,8 +265,9 @@ export function createLLM(): ChatLLM {
       const intent = pendingIntent;
       pendingIntent = null;
       // Every message continues the same thread: the backend resumes the agent's session, so the agent
-      // remembers the conversation. The first message starts the investigation, a "continue" command
-      // resumes it; any other free text goes to the agent as a chat message it reads in context.
+      // remembers the conversation. The full-investigation starter runs every stage, a "continue" command
+      // resumes the investigation; any other text (a first question too) goes to the agent as a chat message it
+      // reads in context - it answers, or investigates if that is what was asked.
       const isFirst = messages.filter((m) => m.role === "user").length === 1;
 
       let run: Run;
@@ -272,7 +278,7 @@ export function createLLM(): ChatLLM {
           account_id: intent.accountId ?? undefined,
           version_id: intent.versionId ?? undefined,
         });
-      } else if (intent?.kind === "investigate" || isFirst || CONTINUE_COMMAND.test(text)) {
+      } else if (intent?.kind === "investigate" || (isFirst && text === INVESTIGATE_PROMPT) || (!isFirst && CONTINUE_COMMAND.test(text))) {
         run = await post<Run>(`/investigations/${threadId}/runs`, {
           kind: "investigate",
           prompt: intent?.kind === "investigate" ? intent.prompt : text,

@@ -231,6 +231,8 @@ export interface Transaction {
 }
 
 export interface Evidence extends EvidenceSummary {
+  version_id: string | null;
+  created_at: string;
   observed_features: string[];
   tx_ids: string[];
   query_id: string | null;

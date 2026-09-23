@@ -1649,11 +1649,11 @@ const GalleryHorizontalEndIcon = ({ size = "1em", ...props }) => /* @__PURE__ */
 //#endregion
 //#region src/components/AgentInterface/_shared/labelsContext.tsx
 const DEFAULT_LABELS = {
-	defaultCategory: "Artifacts",
-	workspaceToggle: "Thread workspace",
+	defaultCategory: "Материалы",
+	workspaceToggle: "Материалы расследования",
 	tabs: {
 		all: "All",
-		artifacts: "Artifacts",
+		artifacts: "Материалы",
 		apps: "Apps"
 	}
 };
@@ -1837,7 +1837,7 @@ const DotMatrixLoader = ({ className, size, variant = "default" }) => {
 		className: clsx("inv-dot-matrix-loader", className),
 		role: "status",
 		"aria-live": "polite",
-		"aria-label": "Loading",
+		"aria-label": "Загрузка",
 		style: {
 			"--inv-dot-matrix-loader-grid-size": gridSize,
 			"--inv-dot-matrix-loader-size": `${resolvedSize}px`
@@ -2010,7 +2010,7 @@ const ArtifactBrowserPage = ({ categoryName }) => {
 							variant: "secondary",
 							size: "small",
 							onClick: () => navigate(artifactListPath()),
-							children: "View all artifacts"
+							children: "Все материалы"
 						})
 					]
 				})
@@ -2037,15 +2037,15 @@ const ArtifactBrowserPage = ({ categoryName }) => {
 							type: "text",
 							value: search,
 							onChange: (e) => setSearch(e.target.value),
-							placeholder: "Search by title",
+							placeholder: "Поиск по названию",
 							className: "inv-agent-artifact-browser__search-input",
-							"aria-label": "Search artifacts by title"
+							"aria-label": "Поиск по названию"
 						}),
 						search && /* @__PURE__ */ jsx(IconButton, {
 							size: "2-extra-small",
 							variant: "tertiary",
 							icon: /* @__PURE__ */ jsx(X, { size: "1em" }),
-							"aria-label": "Clear search",
+							"aria-label": "Очистить поиск",
 							onClick: () => setSearch("")
 						})
 					]
@@ -2055,7 +2055,7 @@ const ArtifactBrowserPage = ({ categoryName }) => {
 				children: [
 					error && /* @__PURE__ */ jsxs("div", {
 						className: "inv-agent-artifact-browser__error",
-						children: ["Failed to load artifacts: ", error.message]
+						children: ["Не удалось загрузить материалы: ", error.message]
 					}),
 					!error && artifacts.length === 0 && !isLoading && /* @__PURE__ */ jsxs("div", {
 						className: "inv-agent-artifact-browser__empty",
@@ -2078,7 +2078,7 @@ const ArtifactBrowserPage = ({ categoryName }) => {
 								variant: "primary",
 								size: "small",
 								onClick: handleNewChat,
-								children: "New Chat"
+								children: "Новый чат"
 							})
 						]
 					}),
@@ -2099,7 +2099,7 @@ const ArtifactBrowserPage = ({ categoryName }) => {
 							variant: "secondary",
 							size: "small",
 							onClick: loadMore,
-							children: "Load more"
+							children: "Загрузить ещё"
 						})
 					})
 				]
@@ -2234,7 +2234,7 @@ const SidebarHeader = ({ className, logo, agentName: agentNameProp, collapseButt
 		children: ctxAgentName
 	});
 	const defaultCollapseButton = /* @__PURE__ */ jsx(AgentInterfaceTooltip, {
-		content: isCollapsedLayout ? "Open sidebar" : "Close sidebar",
+		content: isCollapsedLayout ? "Открыть боковую панель" : "Close sidebar",
 		side: "right",
 		children: /* @__PURE__ */ jsx(IconButton, {
 			icon: /* @__PURE__ */ jsx(PanelLeft, {
@@ -2247,7 +2247,7 @@ const SidebarHeader = ({ className, logo, agentName: agentNameProp, collapseButt
 			},
 			size: "small",
 			variant: "tertiary",
-			"aria-label": isSidebarOpen ? "Collapse sidebar" : "Expand sidebar",
+			"aria-label": isSidebarOpen ? "Collapse sidebar" : "Развернуть боковую панель",
 			className: "inv-agent-sidebar-header__toggle-button"
 		})
 	});
@@ -2341,7 +2341,7 @@ const SidebarItem = ({ icon, trailing, selected, path, className, children, onCl
 * Sidebar navigation for the global artifact browser.
 *
 * Renders one {@link SidebarItem} per configured `artifactCategories` entry
-* (or a single "Artifacts" item when no categories are configured). Clicking
+* (or a single "Материалы" item when no categories are configured). Clicking
 * navigates to the reserved `artifacts/{category}` path, which AgentInterface
 * renders as the searchable artifact browser in the thread region.
 *
@@ -2450,7 +2450,7 @@ const ArtifactViewPage = ({ artifactId, categoryName }) => {
 	if (!storage) body = null;
 	else if (error) body = /* @__PURE__ */ jsxs("div", {
 		className: "inv-agent-artifact-view__error",
-		children: ["Failed to load artifact: ", error.message]
+		children: ["Не удалось загрузить материал: ", error.message]
 	});
 	else if (!artifact) body = /* @__PURE__ */ jsx("div", {
 		className: "inv-agent-artifact-view__loading",
@@ -2466,7 +2466,7 @@ const ArtifactViewPage = ({ artifactId, categoryName }) => {
 	});
 	else if (!parsed) body = /* @__PURE__ */ jsx("div", {
 		className: "inv-agent-artifact-view__error",
-		children: "The renderer could not parse this artifact's content."
+		children: "Не удалось отобразить этот материал."
 	});
 	else body = renderer.actual(parsed.props, controls);
 	return /* @__PURE__ */ jsxs("div", {
@@ -2478,7 +2478,7 @@ const ArtifactViewPage = ({ artifactId, categoryName }) => {
 					variant: "tertiary",
 					size: "small",
 					icon: /* @__PURE__ */ jsx(ArrowLeft, { size: "1em" }),
-					"aria-label": "Back",
+					"aria-label": "Назад",
 					onClick: backToList
 				}),
 				/* @__PURE__ */ jsx("span", {
@@ -2490,7 +2490,7 @@ const ArtifactViewPage = ({ artifactId, categoryName }) => {
 					size: "small",
 					iconLeft: /* @__PURE__ */ jsx(MessageSquare, { size: 14 }),
 					onClick: goToThread,
-					children: "Go to thread"
+					children: "Перейти к чату"
 				})
 			]
 		}), /* @__PURE__ */ jsx("div", {
@@ -2536,7 +2536,7 @@ const useComposerState = () => {
 };
 //#endregion
 //#region src/components/AgentInterface/components/Composer.tsx
-const Composer$1 = ({ className, placeholder = "Type your query here" }) => {
+const Composer$1 = ({ className, placeholder = "Спросите агента…" }) => {
 	const { textContent, setTextContent } = useComposerState();
 	const processMessage = useThread((s) => s.processMessage);
 	const cancelMessage = useThread((s) => s.cancelMessage);
@@ -2608,7 +2608,7 @@ const Composer$1 = ({ className, placeholder = "Type your query here" }) => {
 					}) : /* @__PURE__ */ jsx(ArrowUp, { size: "1em" }),
 					size: "extra-small",
 					variant: "primary",
-					"aria-label": isRunning ? "Cancel message" : "Send message",
+					"aria-label": isRunning ? "Остановить" : "Отправить",
 					className: "inv-agent-thread-composer__submit-button"
 				})
 			})]
@@ -2956,7 +2956,7 @@ const MobileHeader = ({ className, logo, agentName: agentNameProp, menuButton, n
 		icon: /* @__PURE__ */ jsx(Menu, { size: "1em" }),
 		onClick: () => setIsSidebarOpen(true),
 		variant: "secondary",
-		"aria-label": "Open sidebar"
+		"aria-label": "Открыть боковую панель"
 	});
 	const defaultAgentName = /* @__PURE__ */ jsx("span", {
 		className: "inv-agent-mobile-header-agent-name",
@@ -2967,7 +2967,7 @@ const MobileHeader = ({ className, logo, agentName: agentNameProp, menuButton, n
 		icon: /* @__PURE__ */ jsx(SquarePen, { size: "1em" }),
 		onClick: switchToNewThread,
 		variant: "secondary",
-		"aria-label": "New chat"
+		"aria-label": "Новый чат"
 	});
 	return /* @__PURE__ */ jsxs("div", {
 		className: clsx("inv-agent-mobile-header", className),
@@ -3005,24 +3005,24 @@ const NewChatButton = ({ className }) => {
 		iconLeft: /* @__PURE__ */ jsx(SquarePen, { size: "1em" }),
 		className: clsx("inv-agent-new-chat-floating-button", className),
 		onClick: handleNewChat,
-		"aria-label": "New chat",
-		children: "New Chat"
+		"aria-label": "Новый чат",
+		children: "Новый чат"
 	});
 	return /* @__PURE__ */ jsx(SidebarTooltip, {
-		content: "New Chat",
+		content: "Новый чат",
 		disabled: showExpandedButton,
 		children: /* @__PURE__ */ jsxs("button", {
 			type: "button",
 			className: clsx("inv-agent-new-chat-button", { "inv-agent-new-chat-button--collapsed": !showExpandedButton }, className),
 			onClick: handleNewChat,
-			"aria-label": "New chat",
+			"aria-label": "Новый чат",
 			children: [/* @__PURE__ */ jsx("div", {
 				className: "inv-agent-new-chat-button__icon",
 				"aria-hidden": "true",
 				children: /* @__PURE__ */ jsx(SquarePen, { size: "1em" })
 			}), /* @__PURE__ */ jsx("div", {
 				className: "inv-agent-new-chat-button__label",
-				children: "New Chat"
+				children: "Новый чат"
 			})]
 		})
 	});
@@ -4059,7 +4059,7 @@ const DefaultHeader = ({ title, onClose }) => /* @__PURE__ */ jsxs("div", {
 		size: "small",
 		icon: /* @__PURE__ */ jsx(X, { size: "1em" }),
 		onClick: onClose,
-		"aria-label": "Close detailed-view panel"
+		"aria-label": "Закрыть панель"
 	})]
 });
 /**
@@ -4644,7 +4644,7 @@ const Callout = React.forwardRef((props, ref) => {
 * through the theme tokens, and freezes under `prefers-reduced-motion`.
 *
 * The label is required on purpose — every loading surface should say what is
-* actually happening ("Loading artifacts…"), never a bare "Loading…".
+* actually happening ("Загружаю материалы…"), never a bare "Loading…".
 */
 const AmbientLoader = ({ label, className }) => /* @__PURE__ */ jsxs("div", {
 	className: clsx("inv-agent-ambient-loader", className),
@@ -4740,7 +4740,7 @@ const ScrollToLatest = ({ scrollRef }) => {
 		type: "button",
 		className: "inv-agent-thread-scroll-latest",
 		onClick: jump,
-		"aria-label": "Scroll to latest message",
+		"aria-label": "К последнему сообщению",
 		children: /* @__PURE__ */ jsxs("svg", {
 			className: "inv-agent-thread-scroll-latest__arrow",
 			width: "16",
@@ -5037,7 +5037,7 @@ function resolveInputPart(part) {
 		default: return {
 			kind: "file",
 			src: "",
-			label: "Unsupported attachment"
+			label: "Неподдерживаемое вложение"
 		};
 	}
 }
@@ -5122,7 +5122,7 @@ const UserMessageContent = ({ message }) => {
 };
 //#endregion
 //#region src/components/AgentInterface/components/DesktopWelcomeComposer.tsx
-const DesktopWelcomeComposer = ({ className, placeholder = "Type your query here", value, onChange, drafting, inputRef }) => {
+const DesktopWelcomeComposer = ({ className, placeholder = "Спросите агента…", value, onChange, drafting, inputRef }) => {
 	const internal = useComposerState();
 	const isControlled = value !== void 0;
 	const textContent = isControlled ? value : internal.textContent;
@@ -5257,7 +5257,7 @@ const ThreadContainer = ({ children, className }) => {
 		style: { visibility: isLoadingMessages ? "hidden" : void 0 },
 		children: [isLoadingMessages && /* @__PURE__ */ jsx(AmbientLoader, {
 			className: "inv-agent-thread-container__loading",
-			label: "Loading conversation…"
+			label: "Загружаю разговор…"
 		}), /* @__PURE__ */ jsxs("div", {
 			className: "inv-agent-thread-wrapper",
 			ref: containerRef,
@@ -5273,7 +5273,7 @@ const ThreadContainer = ({ children, className }) => {
 				onDragEnd: handleDragEnd,
 				getAriaValues: getResizeAria,
 				controlsId: `${chatPanelId} ${detailPanelId}`,
-				ariaLabel: "Resize chat panel"
+				ariaLabel: "Изменить ширину чата"
 			}), /* @__PURE__ */ jsx("div", {
 				ref: detailedViewPanelRef,
 				id: detailPanelId,
@@ -5373,8 +5373,8 @@ const ThreadError = () => {
 		className: "inv-agent-thread-error",
 		children: /* @__PURE__ */ jsx(Callout, {
 			variant: "danger",
-			title: "Something went wrong",
-			description: threadError.message || "An unexpected error occurred. Please try again."
+			title: "Что-то пошло не так",
+			description: threadError.message || "Непредвиденная ошибка. Попробуйте ещё раз."
 		})
 	});
 };
@@ -5582,7 +5582,7 @@ const WorkspaceToggleButton = () => {
 			},
 			size: "small",
 			variant: "tertiary",
-			"aria-label": isWorkspaceOpen ? "Collapse workspace" : "Expand workspace",
+			"aria-label": isWorkspaceOpen ? "Свернуть материалы" : "Развернуть материалы",
 			className: "inv-agent-thread-header__workspace-toggle-button"
 		})
 	});
@@ -5673,7 +5673,7 @@ const ThreadListSkeleton = () => /* @__PURE__ */ jsxs("div", {
 	className: "inv-agent-thread-list-skeleton",
 	role: "status",
 	"aria-live": "polite",
-	"aria-label": "Loading threads",
+	"aria-label": "Загружаю чаты",
 	children: [/* @__PURE__ */ jsx("div", {
 		className: "inv-agent-thread-list-skeleton__group",
 		"aria-hidden": "true",
@@ -5770,7 +5770,7 @@ const ThreadButton = ({ id, title, className }) => {
 					icon: /* @__PURE__ */ jsx(EllipsisIcon, { size: "1em" }),
 					size: "2-extra-small",
 					variant: "tertiary",
-					"aria-label": "Thread actions"
+					"aria-label": "Действия с чатом"
 				})
 			}), /* @__PURE__ */ jsx(DropdownMenu.Portal, { children: /* @__PURE__ */ jsx(DropdownMenu.Content, {
 				className: "inv-agent-thread-button-dropdown-menu",
@@ -5788,7 +5788,7 @@ const ThreadButton = ({ id, title, className }) => {
 						iconLeft: /* @__PURE__ */ jsx(Trash2Icon, { size: "1em" }),
 						size: "extra-small",
 						variant: "tertiary",
-						children: "Delete"
+						children: "Удалить"
 					})
 				})
 			}) })]
@@ -5848,7 +5848,7 @@ const ThreadList = ({ className }) => {
 			className: "inv-agent-thread-list-content",
 			children: [threads.length > 0 && /* @__PURE__ */ jsx("div", {
 				className: "inv-agent-thread-list-group",
-				children: "Threads"
+				children: "Чаты"
 			}), threads.map((thread) => /* @__PURE__ */ jsx(ThreadButton, {
 				id: thread.id,
 				title: thread.title
@@ -6029,7 +6029,7 @@ const WelcomeScreen = (props) => {
 *   workspace toggle.
 * - Lists every registered artifact, grouped into one section per
 *   `artifactCategories` entry configured on `<AgentInterface>`; a single
-*   "Artifacts" section lists everything when no categories are configured.
+*   "Материалы" section lists everything when no categories are configured.
 *   There are no tabs or filtering — the rail shows it all.
 * - Item click activates the corresponding DetailedView; the rail closes while
 *   a DetailedView is open.
@@ -6267,7 +6267,7 @@ const ArtifactViewMobileHeader = ({ artifactId, categoryName }) => {
 			icon: /* @__PURE__ */ jsx(ArrowLeft, { size: "1em" }),
 			onClick: backToList,
 			variant: "secondary",
-			"aria-label": "Back to artifacts"
+			"aria-label": "Назад к материалам"
 		}),
 		agentName: /* @__PURE__ */ jsx("span", {
 			className: "inv-agent-mobile-header-agent-name",
@@ -6278,7 +6278,7 @@ const ArtifactViewMobileHeader = ({ artifactId, categoryName }) => {
 			icon: /* @__PURE__ */ jsx(MessageSquare, { size: "1em" }),
 			onClick: goToThread,
 			variant: "secondary",
-			"aria-label": "Go to thread",
+			"aria-label": "Перейти к чату",
 			disabled: !artifact
 		})
 	});
@@ -6300,7 +6300,7 @@ const MobileWorkspaceToggleButton = () => {
 			icon: /* @__PURE__ */ jsx(GalleryHorizontalEndIcon, { size: "1em" }),
 			onClick: () => setIsWorkspaceOpen(!isWorkspaceOpen),
 			variant: "secondary",
-			"aria-label": isWorkspaceOpen ? "Collapse workspace" : "Expand workspace"
+			"aria-label": isWorkspaceOpen ? "Свернуть материалы" : "Развернуть материалы"
 		})
 	});
 };
@@ -8230,7 +8230,7 @@ const ScrollButtonsVertical = React.memo(({ dataHeight, effectiveHeight, canScro
 			size: "extra-small",
 			onClick: onScrollDown,
 			disabled: !canScrollDown,
-			"aria-label": "Scroll down"
+			"aria-label": "Прокрутить вниз"
 		})]
 	});
 });
@@ -8440,14 +8440,14 @@ const StackedLegend = ({ items, onItemHover, activeKey, onLegendItemHover, conta
 				size: "small",
 				onClick: () => setShowAll(true),
 				className: "inv-stacked-legend-show-more-button",
-				children: "Show more"
+				children: "Показать ещё"
 			}),
 			isShowMoreLayout && showAll && items.length > LEGEND_ITEM_LIMIT && /* @__PURE__ */ jsx(Button, {
 				variant: "secondary",
 				size: "small",
 				onClick: () => setShowAll(false),
 				className: "inv-stacked-legend-show-less-button",
-				children: "Show less"
+				children: "Свернуть"
 			})
 		]
 	});
@@ -16427,7 +16427,7 @@ const ShareThreadModal = forwardRef(({ title, trigger, generateLink, themeClassN
 				className: "inv-share-thread-modal__header",
 				children: [/* @__PURE__ */ jsx(Dialog.Title, {
 					className: "inv-share-thread-modal__title",
-					children: title ?? "Share chat"
+					children: title ?? "Поделиться чатом"
 				}), /* @__PURE__ */ jsx(IconButton, {
 					icon: /* @__PURE__ */ jsx(X, {}),
 					variant: "tertiary",
@@ -16475,7 +16475,7 @@ const useShareThread = ({ generateShareLink }) => {
 	const { isRunning, isLoadingMessages, messages } = useThread();
 	const { selectedThreadId } = useThreadList();
 	const getShareThreadLink = useCallback(async () => {
-		if (!selectedThreadId) throw new Error("No thread selected");
+		if (!selectedThreadId) throw new Error("Чат не выбран");
 		return generateShareLink(selectedThreadId);
 	}, [generateShareLink, selectedThreadId]);
 	return {
@@ -17222,7 +17222,7 @@ const ListedSources = memo((props) => {
 			className: "inv-listed-sources-header",
 			children: [/* @__PURE__ */ jsx("span", {
 				className: "inv-listed-sources-header__title",
-				children: "Sources"
+				children: "Источники"
 			}), hasOverflow && /* @__PURE__ */ jsxs("div", {
 				className: "inv-listed-sources-header__buttons",
 				children: [/* @__PURE__ */ jsx(IconButton, {
@@ -17270,7 +17270,7 @@ const Sources = memo(() => {
 	if (!sources.length) return null;
 	return /* @__PURE__ */ jsx(ListedSources, { sources });
 });
-Sources.displayName = "Sources";
+Sources.displayName = "Источники";
 //#endregion
 //#region src/components/Steps/Steps.tsx
 const StepNumberContext = createContext(0);
@@ -20946,7 +20946,7 @@ const Modal$1 = ({ title, open, onOpenChange, size = "md", children }) => {
 					children: title
 				}), /* @__PURE__ */ jsx("button", {
 					className: "inv-modal-close",
-					"aria-label": "Close",
+					"aria-label": "Закрыть",
 					onClick: handleClose,
 					children: /* @__PURE__ */ jsx(X, { size: 18 })
 				})]

@@ -120,6 +120,10 @@ def dataset_instruction(dataset: dict[str, Any]) -> str:
   priority_score 0-1, rank, evidence; clusters in `clusters` / `tk.clusters()`. These are deterministic,
   rule-based leads and the deliverable CSV files: start from the top of the ranking and the most suspicious
   clusters, verify them against the transfers, and challenge them with ordinary explanations.
+- When the user asks about several nodes (a top list, "who to check first", a set of gids), the final text
+  (finish_run summary or answer_question) must have ONE line per node, in priority order: full gid, role in the
+  task vocabulary, rank / priority_score, and 1-2 figures from node_card that justify it (plus the ordinary
+  explanation if it is strong). Group or summarise only after that per-node list, never instead of it.
 - In the final list write every account as its FULL gid (all 18 digits, e.g. 100000003115284100) - analysts
   search the graph by it; never shorten ids.
 - Report roles in the task vocabulary. Board roles map to it as: collector -> consolidator,
